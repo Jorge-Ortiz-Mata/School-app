@@ -114,6 +114,8 @@ For more infrmation, click on this link: https://github.com/faker-ruby/faker
 
 ### Devise gem.
 
+#### Installing devise.
+
 This gem provides sign in and sign up features for users.
 
 * Gem: `gem 'devise'`.
@@ -124,6 +126,9 @@ This gem provides sign in and sign up features for users.
 In order to restrict actions add: 
 
 * Before action: `before_action :authenticate_user!`
+
+In order to see how many times a User sign up, to the next steps.
+
 
 For more information, click on this link: https://github.com/heartcombo/devise
 
