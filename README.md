@@ -127,7 +127,45 @@ In order to restrict actions add:
 
 * Before action: `before_action :authenticate_user!`
 
-In order to see how many times a User sign up, to the next steps.
+In order to see how many times a User sign up, add **Trackable** and do the next steps.
+
+* Within models/user.rb add: `devise :trackable`.
+* Create a new migration: `rails g migration add_trackable_to_devise`.
+* The migration should look like: 
+
+```
+class AddTrackableToDevise < ActiveRecord::Migration[6.1]
+  def change
+    add_column :users, :sign_in_count, :integer, default: 0, null: false
+    add_column :users, :current_sign_in_at, :datetime
+    add_column :users, :last_sign_in_at, :datetime
+    add_column :users, :current_sign_in_ip, :inet
+    add_column :users, :last_sign_in_ip, :inet
+  end
+end
+```
+
+* Run: `rails db:migrate`.
+* See how many times a user sign up:
+
+```
+  .card-footer
+    = 'sign_in_count'.humanize
+    = user.sign_in_count
+    .row
+    = 'current_sign_in_at'.humanize
+    = user.current_sign_in_at
+    .row
+    = 'last_sign_in_at'.humanize
+    = user.last_sign_in_at
+    .row
+    = 'current_sign_in_ip'.humanize
+    = user.current_sign_in_ip
+    .row
+    = 'last_sign_in_ip'.humanize
+    = user.last_sign_in_ip
+```
+
 
 
 For more information, click on this link: https://github.com/heartcombo/devise
