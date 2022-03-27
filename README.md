@@ -1,5 +1,48 @@
 # School project.
 
+## Project development.
+
+
+
+### Step 01. Prepare git repo and heroku app.
+
+Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
+
+### Step 02. Installing Bootstrap and Fontawesome.
+
+Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
+
+### Step 03. Install Haml and Simple form gems.
+
+Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
+
+### Step 04. Generate courses scaffold.
+
+#### Creating the header.
+
+1. Adding the render sintax in application.html.haml: `= render 'shared/header'`.
+
+2. Create a folder shared/_header.html.haml and add the next code.
+
+```
+= link_to "SchoolApp", root_path
+= link_to "Courses", courses_path, class:"btn btn-info"
+= link_to "Privacy policy and terms", privacy_and_terms_path
+```
+
+3. In courses/index.html.harb we can create a nice table: ``%table.table``.
+
+4. Adding validations to our model.
+
+```
+validates :title,  presence: true
+validates :description, presence: true, length: { :minimum => 5 }
+```
+
+Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
+
+
+
 ## Gems.
 
 ### Haml Rails gem.

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
+  resources :courses
   root 'pages#index'
-  get 'pages/privacy_terms'
+  get 'privacy_and_terms', to: 'pages#privacy_terms'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
