@@ -18,8 +18,6 @@ Don't forget to make a commit before to do the next step: `git commit -am "Commi
 
 ### Step 04. Generate courses scaffold.
 
-#### Creating the header.
-
 1. Adding the render sintax in application.html.haml: `= render 'shared/header'`.
 
 2. Create a folder shared/_header.html.haml and add the next code.
@@ -41,7 +39,13 @@ validates :description, presence: true, length: { :minimum => 5 }
 
 Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
 
+### Step 05. Add Rich Text.
 
+1. Run the command: `rails action_text:install`
+
+2. Run the migration: `rails db:migrate`
+
+3. Go to Course model and the next code: `has_rich_text :description`.
 
 ## Gems.
 
