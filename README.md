@@ -1,6 +1,17 @@
 # School project.
 
-## Git info and commands.
+## Gems.
+
+### Haml rails.
+
+This gem provides a different sintax within your .html.erb files. Besides, it changes the .erb extension
+to .haml extension. 
+
+* Paste this into your Gemfile: `gem "haml-rails"`.
+* Run the command: `$ rails haml:erb2haml`. 
+* Type (Y) = Yes.
+
+## Git.
 
 ### Edit commits.
 
