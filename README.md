@@ -181,6 +181,7 @@ class AddConfirmableToDevise < ActiveRecord::Migration[6.0]
   def change
     add_column :users, :confirmation_token, :string
     add_column :users, :confirmed_at, :datetime
+    add_column :users, :confirmation_sent_at, :datetime
     add_column :users, :unconfirmed_email, :string
     add_index :users, :confirmation_token, unique: true
     User.update_all confirmed_at: DateTime.now
@@ -189,6 +190,16 @@ end
 ```
 
 * Run: `rails db:migrate`.
+
+If you want to see if a user has confirmed its email account, add:
+
+```
+Confirmed email?
+    - if user.confirmed_at.present?
+      .badge.badge-success Yes
+    - else
+      .badge.badge-danger No
+```
 
 For more information, click on this link: https://github.com/heartcombo/devise
 
