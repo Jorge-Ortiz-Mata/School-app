@@ -12,9 +12,12 @@ Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
 
+import "bootstrap"
+require('stylesheets/application.scss')
 require("trix")
 require("@rails/actiontext")
 
 import 'bootstrap/dist/js/bootstrap'
 import 'bootstrap/dist/css/bootstrap'
 require("stylesheets/application.scss")
+

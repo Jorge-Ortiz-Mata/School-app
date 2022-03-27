@@ -10,6 +10,32 @@ Don't forget to make a commit before to do the next step: `git commit -am "Commi
 
 ### Step 02. Installing Bootstrap and Fontawesome.
 
+1. Create a folder with a file in it: `app/javascript/stylesheets/application.scss`
+
+2. In enviroment.js, add the next code:
+
+```
+const { environment } = require('@rails/webpacker')
+const webpack = require("webpack")
+environment.plugins.append("Provide", new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.jQuery': 'jquery',
+    Popper: ['popper.js', 'default']
+  }))
+module.exports = environment
+```
+
+3. In application.html.haml add: `= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' `
+
+4. In application.js add: 
+
+```
+import 'bootstrap/dist/js/bootstrap'
+import 'bootstrap/dist/css/bootstrap'
+require("stylesheets/application.scss")
+```
+
 Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
 
 ### Step 03. Install Haml and Simple form gems.
@@ -47,6 +73,8 @@ Don't forget to make a commit before to do the next step: `git commit -am "Commi
 
 3. Go to Course model and the next code: `has_rich_text :description`.
 
+Don't forget to make a commit before to do the next step: `git commit -am "Commit description."` .
+
 ## Gems.
 
 ### Haml Rails gem.
@@ -63,7 +91,70 @@ to .haml extension.
 This gem is utilize in order to create simple and basic forms.
 
 * Gem: `gem 'simple_form'`.
-* Run the command: `rails generate simple_form:install`.
+* Run the command: `rails generate simple_form:install --bootstrap`.
+
+### Faker gem.
+
+This gem provides fake data in order to see this data in our app.
+
+* Gem: `gem 'faker'`
+* Go to our seeds:
+
+```
+30.times do
+  Course.create!([{
+    title: Faker::Educator.course_name,
+    description: Faker::TvShows::GameOfThrones.quote
+  }])
+end
+```
+* Run: `rails db:seed`
+
+For more infrmation, click on this link: https://github.com/faker-ruby/faker
+
+### Devise gem.
+
+This gem provides sign in and sign up features for users.
+
+* Gem: `gem 'devise'`.
+* Run: `rails g devise:install`.
+* Model user: `rails g devise User`.
+* Views: `rails g devise:views`.
+
+In order to restrict actions add: 
+
+* Before action: `before_action :authenticate_user!`
+
+For more information, click on this link: https://github.com/heartcombo/devise
+
+### Friendly_id gem
+
+Using this gem in order to make friendly the URL of an specific object.
+
+* Gem: `gem 'friendly_id', '~> 5.4.0'`.
+* Add a migration: `rails g migration AddSlugToCourses slug:uniq`.
+* Run this command: `rails generate friendly_id`.
+* Run: `rails db:migrate`.
+
+Go to the Course model (in this example) and add the nex code (you should change the attribute :title according to what you want):
+
+```
+extend FriendlyId
+friendly_id :title, use: :slugged
+```
+
+And in the Course controller, you can modify the method set_Course to:
+
+```
+@course = Course.friendly.find(params[:id])
+```
+
+Now when you create a new course like the following: `Course.create! title: "Joe Schmoe"`
+You can then access the user show page using the URL http://localhost:3000/courses/joe-schmoe.
+
+If you're adding FriendlyId to an existing app and need to generate slugs for existing courses, do this from the console, runner, or add a Rake task: `Course.find_each(&:save)`
+
+For more information, click on this link: https://github.com/norman/friendly_id
 
 ## Git.
 
