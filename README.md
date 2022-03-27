@@ -127,6 +127,8 @@ In order to restrict actions add:
 
 * Before action: `before_action :authenticate_user!`
 
+### Trackable users.
+
 In order to see how many times a User sign up, add **Trackable** and do the next steps.
 
 * Within models/user.rb add: `devise :trackable`.
@@ -166,7 +168,27 @@ end
     = user.last_sign_in_ip
 ```
 
+### Confirmable users.
 
+In order to confirm an email address, do the next:
+
+* Within models/user.rb add: `devise :confirmable`.
+* Create a new migration: `rails g migration add_confirmable_to_devise`.
+* The migration should look like: 
+
+```
+class AddConfirmableToDevise < ActiveRecord::Migration[6.0]
+  def change
+    add_column :users, :confirmation_token, :string
+    add_column :users, :confirmed_at, :datetime
+    add_column :users, :unconfirmed_email, :string
+    add_index :users, :confirmation_token, unique: true
+    User.update_all confirmed_at: DateTime.now
+  end
+end
+```
+
+* Run: `rails db:migrate`.
 
 For more information, click on this link: https://github.com/heartcombo/devise
 
