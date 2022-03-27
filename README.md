@@ -2,14 +2,21 @@
 
 ## Gems.
 
-### Haml rails.
+### Haml Rails gem.
 
 This gem provides a different sintax within your .html.erb files. Besides, it changes the .erb extension
 to .haml extension. 
 
-* Paste this into your Gemfile: `gem "haml-rails"`.
-* Run the command: `$ rails haml:erb2haml`. 
+* Gem: `gem "haml-rails"`.
+* Run the command: `rails haml:erb2haml`. 
 * Type (Y) = Yes.
+
+### Simple Form gem.
+
+This gem is utilize in order to create simple and basic forms.
+
+* Gem: `gem 'simple_form'`.
+* Run the command: `rails generate simple_form:install`.
 
 ## Git.
 
