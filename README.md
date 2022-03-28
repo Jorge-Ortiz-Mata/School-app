@@ -232,6 +232,65 @@ If you're adding FriendlyId to an existing app and need to generate slugs for ex
 
 For more information, click on this link: https://github.com/norman/friendly_id
 
+### Racker gem.
+
+This gem allowsyou to build a search bar rapidly.
+In order to use this gem, following the nexts steps: 
+
+* Gem: `gem 'ransack'`.
+
+Within your controllers file, add: 
+
+```
+    def index
+        @courses = Course.all
+        @q = Course.ransack(params[:q])
+        @courses_ransack = @q.result(distinct: true)
+    end
+```
+
+Within your courses index, add:
+
+```
+<%= search_form_for @q do |f| %>
+
+  # Search if an associated articles.title starts with...
+  <%= f.label :title_cont %>
+  <%= f.search_field :title_cont %>
+
+  <%= f.submit %>
+<% end %>
+<br>
+<%= link_to "Refresh", courses_path %>
+<br>
+
+<% if params[:q].present? %>
+<h2>Results</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @courses_ransack.each do |course| %>
+      <tr>
+        <td><%= course.title %></td>
+        <td><%= course.body %></td>
+        <td><%= link_to 'Show', course %></td>
+        <td><%= link_to 'Edit', edit_course_path(course) %></td>
+        <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+```
+
+
 ## Git.
 
 ### Edit commits.
