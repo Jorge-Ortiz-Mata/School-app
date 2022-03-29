@@ -462,6 +462,84 @@ private:
 
 3. In the index.html file, you can see that parameter using: `user.online?`
 
+### Exception Notification gem.
+
+This gem will allow you to send an email with all the information about errors in production:
+
+1. Gem: `gem 'exception_notification'`.
+2. Add the next code in enviroments"production.rb: 
+
+```
+Rails.application.config.middleware.use ExceptionNotification::Rack,
+  email: {
+    email_prefix: '[PREFIX] ',
+    sender_address: %{"School App" <support@schoolapp.herokuapp.com>},
+    exception_recipients: %w{ortiz.mata.jorge@gmail.com}
+  }
+```
+
+### Will Paginate gem.
+
+This gem will allow you see an specific amount of objects in the index.
+
+1. Gem: `gem 'will_paginate', '~> 3.1'`.
+2. In your controller, add:
+
+```
+  def index
+    # @articles = Article.all <-- This was removed in order to include pagination functionality.
+    @articles = Article.paginate(page: params[:page], per_page: 3) # <-- Pagination cinfiguration. 3 is the amount of objects displayed in the views.
+  end
+```
+
+3. In the index view, you should add:
+
+```
+<div>
+    <%= will_paginate @articles %>
+</div>
+```
+
+### Pagy gem.
+
+This gem will allow you see an specific amount of objects in the index.
+
+1. Gem: `gem 'pagy'`.
+2. Create a file in config/intializres/pagy.rb and the code in this link: https://raw.githubusercontent.com/ddnexus/pagy/master/lib/config/pagy.rb
+3. In application_controller add: `include Pagy::Backend`.
+4. I this example, we want to paginate our courses, so:
+
+```
+def index
+  @pagy, @courses = pagy(Course.all)
+end
+```
+
+5. In application_helper add : `include Pagy::Frontend`.
+6. Uncomment these lines in order to declare how many objects will be displayed in your view and add styling.
+
+```
+Pagy::DEFAULT[:items]  = 2     
+require 'pagy/extras/bootstrap'
+```
+
+7. In your index view, you can add the links in order to change between objects.
+
+```
+<%== pagy_nav(@pagy) %>
+<%== pagy_bootstrap_nav(@pagy) %>
+<%== pagy_bootstrap_nav_js(@pagy) %>
+<%== pagy_bootstrap_combo_nav_js(@pagy) %>
+```
+
+
+For more information, you can visit these links:
+
+* https://github.com/ddnexus/pagy
+* https://ddnexus.github.io/pagy/extras/bootstrap#gsc.tab=0
+* https://raw.githubusercontent.com/ddnexus/pagy/master/lib/config/pagy.rb
+
+
 
 ## Git.
 
