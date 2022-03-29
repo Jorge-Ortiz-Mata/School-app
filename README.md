@@ -290,6 +290,178 @@ Within your courses index, add:
 <% end %>
 ```
 
+### Racker gem.
+
+This gem allowsyou to build a search bar rapidly.
+In order to use this gem, following the nexts steps: 
+
+* Gem: `gem 'ransack'`.
+
+Within your controllers file, add: 
+
+```
+    def index
+        @courses = Course.all
+        @q = Course.ransack(params[:q])
+        @courses_ransack = @q.result(distinct: true)
+    end
+```
+
+Within your courses index, add:
+
+```
+<%= search_form_for @q do |f| %>
+
+  # Search if an associated articles.title starts with...
+  <%= f.label :title_cont %>
+  <%= f.search_field :title_cont %>
+
+  <%= f.submit %>
+<% end %>
+<br>
+<%= link_to "Refresh", courses_path %>
+<br>
+
+<% if params[:q].present? %>
+<h2>Results</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Body</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @courses_ransack.each do |course| %>
+      <tr>
+        <td><%= course.title %></td>
+        <td><%= course.body %></td>
+        <td><%= link_to 'Show', course %></td>
+        <td><%= link_to 'Edit', edit_course_path(course) %></td>
+        <td><%= link_to 'Destroy', course, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+```
+### Rolify gem.
+
+This gem will provide you roles to your users.
+
+1. Gem: `gem "rolify"`.
+2. Run: `rails g rolify Role User`.
+3. User.rb model file: 
+
+```
+class User < ApplicationRecord
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  rolify
+
+end
+```
+
+4. Run: `rails db:migrate`.
+5. In the rails console: `User.first.add_role :admin`.
+6. To check user's role: `User.first.has_role? :admin`.
+7. We can a method if the user didn't select a role:
+
+```
+after_create :assign_default_role
+
+  def assign_default_role
+    self.add_role(:moderator) if self.roles.blank?
+  end
+```
+
+8. In order to the user's roles, you can add this to your view:
+
+```
+<% user.roles.each do |role| %>
+  <%= role.name >
+<% end %>
+```
+
+### Pundit gem.
+
+Use this gem in order to set authorizations.
+
+1. Gem: `gem "pundit"`.
+2. In application controller add: `include Pundit::Authorization`.
+3. Run: `rails g pundit:install`.
+4. Go to application controller and add:
+
+```
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+
+  def user_not_authorized
+    flash[:alert] = "You are not authorized to perform this action."
+    redirect_to(request.referrer || root_path)
+  end
+```
+
+5. Run this command: `rails g pundit:policy course`.
+6. In course_policy.rb you can add the authorizations:
+
+```
+  def edit?
+    @user.has_role?:admin
+  end
+```
+
+7. In course controller, you should add:
+
+```
+  def edit
+    authorize @course
+  end
+```
+
+If you want to add validations wetween users:
+
+1. Run this command: `rails g pundit:policy user`.
+2. Add thr next code in your user_policy.rb
+
+```
+  def edit?
+    @user.has_role?:admins
+  end
+```
+
+In order to hide actions links, you should add: `if policy(course).edit?`.
+
+If you want to see if a user is curretnly logged in:
+
+1. In application_controller.rb add:
+
+```
+after_action :user_activity
+
+private: 
+
+  def user_activity
+    current_user.try :touch
+  end
+```
+
+2. In user.rb add:
+
+```
+  def online?
+    updated_at > 2.minutes.ago
+  end
+```
+
+3. In the index.html file, you can see that parameter using: `user.online?`
+
 
 ## Git.
 
