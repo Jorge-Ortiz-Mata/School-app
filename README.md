@@ -539,7 +539,59 @@ For more information, you can visit these links:
 * https://ddnexus.github.io/pagy/extras/bootstrap#gsc.tab=0
 * https://raw.githubusercontent.com/ddnexus/pagy/master/lib/config/pagy.rb
 
+## Scopes.
 
+Using scopes in order to add programming logic. This scopes will be called from the controller, example:
+
+In controllers/courses.rb:
+
+```
+  @courses_latest = Course.latest
+```
+
+In model/user.rb
+
+```
+  scope :latest, -> { limit(3).order(created_at: :desc) }
+```
+
+## Dependent Destroys.
+
+If youo have a course model where users leave reviews and, if a user cancel its account and you 
+want to keep his a review, in the user model, you should add: `dependent: :nullify`.
+
+## Chartkick gem. 
+
+This gem will allow you to draw charts in your application.
+
+1. Gem: `gem "chartkick"`.
+
+For more information, check this link: https://chartkick.com/ 
+
+## Groupdate gem.
+
+1. Gem: `gem "groupdate"`.
+
+For more informaiton, check this link: https://github.com/ankane/groupdate
+
+## Cleaning routes.
+
+You can clean your routes by addinf :namespace as a group:
+
+```
+namespace :charts do
+    get 'users_per_day'
+    get 'enrollments_per_day'
+    get 'course_popularity'
+    get 'money_makers'
+  end
+  #get 'charts/users_per_day', to: 'charts#users_per_day'
+  #get 'charts/enrollments_per_day', to: 'charts#enrollments_per_day'
+  #get 'charts/course_popularity', to: 'charts#course_popularity'
+  #get 'charts/money_makers', to: 'charts#money_makers'
+```
+
+All these routes belong to **charts_controller.rb**.
 
 ## Git.
 
